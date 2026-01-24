@@ -10,6 +10,8 @@ In order to show the path of development on this little project, I will not be m
 2. v2 -- same as main, but tom.erl is heavily commented.
 3. v3 -- Most comments removed, Added simple `send/1` function to send by atom name of server.
 4. v4 -- Changed `send/1` to a generic send message to server name with checks.
+5. v5 -- Created a single tom server based on OTP gen_server.
+
 
 
 
