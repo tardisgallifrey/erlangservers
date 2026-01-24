@@ -1,51 +1,35 @@
--module(tom).       %% define module, must match filename
--export([start/0, send/1]).    %% Export functions
 
-%% Function to spawn main loop as the server
+-module(tom).
+-behaviour(gen_server).
+
+-export([start/0, say/1, stop/0]).
+-export([init/1, handle_cast/2, handle_call/3, terminate/2]).
+
+%%% ===== Public API =====
+%%% These are the functions we can use
+
 start() ->
-    Pid = spawn(fun() -> loop(undefined) end),
-    register(tom, Pid),     
-    Pid.
+    gen_server:start_link({local, tom}, ?MODULE, undefined, []).
 
-%%  Here is where the magic server action takes place
-loop(State) ->
+%% Yes, this server only talks to itself.
+say(Text) ->
+    gen_server:cast(tom, {say, Text}).
 
-    %%  The receive/end block defines a server.
-    %%  loop() is just a function containing receive/end
-    %%  But, to be a server, it must also loop.
-    receive
+stop() ->
+    gen_server:call(tom, stop).
 
-        {From, get} ->
-            From ! {reply, State},
-            loop(State);
+%%% ===== gen_server callbacks =====
+%%% These are the OTP gen_server functions we tie our API to
 
-        %% This is the one doing real work
-        {say, Text} ->
-            io:format("Tom received: ~p~n", [Text]),
-            loop(State);
+init(State) ->
+    {ok, State}.
 
-        %% If we send tom:stop(), we end the server.
-        stop ->
-            ok
-    end.
+handle_cast({say, Text}, State) ->
+    io:format("Tom received: ~p~n", [Text]),
+    {noreply, State}.
 
-%% Generic function instead of one for each server.
-%% "undefined" check MUST come first.  Semantic error if not.
-send(undefined) ->
-    io:format("Target is not running.~n"),
-    {error, not_running};
+handle_call(stop, _From, State) ->
+    {stop, normal, ok, State}.
 
-%% if this were first, it would return undefined
-%% send(undefined) would pass because is_atom(undefined) is true.
-%% process would go into eternal loop
-send(Name) when is_atom(Name) ->
-    send(whereis(Name));
-
-send(Pid) when is_pid(Pid) ->
-    Msg = setMessage(),
-    Pid ! {say, Msg},
+terminate(_Reason, _State) ->
     ok.
-
-setMessage() ->
-    Text = io:get_line("Enter text to send: "),
-    string:trim(Text).

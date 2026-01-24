@@ -6,9 +6,10 @@ I am learning Erlang Server programming.  As such, I have three servers called, 
 2. v2 is a branch with tom.erl heavily commented.
 3. v3 is a branch with checks to see if server is running.
 4. v4 is a branch that has a generic `send/1` with server checks.
+5. v5 is a basic OTP gen_server that only talks to itself.
 
 ### This branch:
 
-The `send/1` function has been changed to a generic one where the server name is given and checked when called.
+Here, we have a single OTP gen_server example.  It has three public functions; start, stop, and say.  It only talks to itself.
 
 
