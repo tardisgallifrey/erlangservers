@@ -8,6 +8,6 @@ In order to show the path of development on this little project, I will not be m
 
 1. main branch -- original as written (pedantic, yes).
 2. v2 -- same as main, but tom.erl is heavily commented.
-3. v3 -- Most comments removed, next steps done.
+3. v3 -- Most comments removed, Added simple `send/1` function to send by atom name of server.
 
 
