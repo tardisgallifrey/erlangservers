@@ -4,10 +4,11 @@ I am learning Erlang Server programming.  As such, I have three servers called, 
 
 1. main branch is the first one I wrote that functions.
 2. v2 is a branch with tom.erl heavily commented.
-3. v3 is a branch with checks to see if server is running
+3. v3 is a branch with checks to see if server is running.
+4. v4 is a branch that has a generic `send/1` with server checks.
 
 ### This branch:
 
-Server `tom` contains two methods for checking if a server returns a valid `Pid`.  We won't know the correct `Pid`, but also we want to see if it is valid.  The `send_dick()` function is one way to see it work, but the `send(atom)` is a better way.
+The `send/1` function has been changed to a generic one where the server name is given and checked when called.
 
 

@@ -19,15 +19,17 @@ loop(State) ->
             ok
     end.
 
-send(harry) when is_atom(harry) ->
-    send(whereis(harry));
-
-send(tom) when is_atom(tom) ->
-    send(whereis(tom));
-
+%% Generic function instead of one for each server.
+%% "undefined" check MUST come first.  Semantic error if not.
 send(undefined) ->
-    io:format("Target is not running~n"),
+    io:format("Target is not running.~n"),
     {error, not_running};
+
+%% if this were first, it would return undefined
+%% send(undefined) would pass because is_atom(undefined) is true.
+%% process would go into eternal loop
+send(Name) when is_atom(Name) ->
+    send(whereis(Name));
 
 send(Pid) when is_pid(Pid) ->
     Msg = setMessage(),

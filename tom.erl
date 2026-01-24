@@ -1,5 +1,5 @@
 -module(tom).       %% define module, must match filename
--export([start/0, send/1, send_dick/0]).    %% Export functions
+-export([start/0, send/1]).    %% Export functions
 
 %% Function to spawn main loop as the server
 start() ->
@@ -29,35 +29,18 @@ loop(State) ->
             ok
     end.
 
-%%  One way to check for valid Pid from server "dick"
-%%  Will not be carried forward.  Here for reference.
-send_dick() ->
-    case whereis(dick) of
-        undefined ->
-            io:format("Server Dick is not running~n"),
-            {error, not_running};
-
-        Pid when is_pid(Pid) ->
-            Msg = setMessage(),
-            Pid ! {say, Msg},
-            ok
-    end.
-
-%% more generic send with checks
-%% checks that harry is an atom before sending forward
-send(harry) when is_atom(harry) ->
-    %% dave def: convert to send(whereis()) and send forward 
-    send(whereis(harry));
-
-send(dick) when is_atom(dick) ->
-    send(whereis(dick));
-
-%% for a server that returns undefined from whereis()
+%% Generic function instead of one for each server.
+%% "undefined" check MUST come first.  Semantic error if not.
 send(undefined) ->
-    io:format("Target is not running~n"),
+    io:format("Target is not running.~n"),
     {error, not_running};
 
-%% If whereis() returns a valid Pid, send a message
+%% if this were first, it would return undefined
+%% send(undefined) would pass because is_atom(undefined) is true.
+%% process would go into eternal loop
+send(Name) when is_atom(Name) ->
+    send(whereis(Name));
+
 send(Pid) when is_pid(Pid) ->
     Msg = setMessage(),
     Pid ! {say, Msg},
