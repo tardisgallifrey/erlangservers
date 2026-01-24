@@ -1,5 +1,5 @@
 -module(dick).
--export([start/0, sendtom/0, sendharry/0]).
+-export([start/0, send/1]).
 
 start() ->
     Pid = spawn(fun() -> loop(undefined) end),
@@ -19,16 +19,20 @@ loop(State) ->
             ok
     end.
 
-sendtom() ->
-    Msg = setMessage(),
-    Pid = whereis(tom), 
-    Pid ! {say, Msg}.
+send(harry) when is_atom(harry) ->
+    send(whereis(harry));
 
-sendharry() ->
-    Msg = setMessage(),
-    Pid = whereis(harry), 
-    Pid ! {say, Msg}.
+send(tom) when is_atom(tom) ->
+    send(whereis(tom));
 
+send(undefined) ->
+    io:format("Target is not running~n"),
+    {error, not_running};
+
+send(Pid) when is_pid(Pid) ->
+    Msg = setMessage(),
+    Pid ! {say, Msg},
+    ok.
 
 
 setMessage() ->

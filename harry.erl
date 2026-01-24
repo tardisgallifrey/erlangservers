@@ -1,5 +1,5 @@
 -module(harry).
--export([start/0, senddick/0, sendtom/0]).
+-export([start/0, send/1]).
 
 start() ->
     Pid = spawn(fun() -> loop(undefined) end),
@@ -19,17 +19,20 @@ loop(State) ->
             ok
     end.
 
-sendtom() ->
+send(tom) when is_atom(tom) ->
+    send(whereis(tom));
+
+send(dick) when is_atom(dick) ->
+    send(whereis(dick));
+
+send(undefined) ->
+    io:format("Target is not running."),
+    {error, not_running};
+
+send(Pid) when is_pid(Pid) ->
     Msg = setMessage(),
-    Pid = whereis(tom), 
-    Pid ! {say, Msg}.
-
-senddick() ->
-    Msg = setMessage(),
-    Pid = whereis(dick), 
-    Pid ! {say, Msg}.
-
-
+    Pid ! {say, Msg},
+    ok.
 
 setMessage() ->
     Text = io:get_line("Enter text to send: "),
