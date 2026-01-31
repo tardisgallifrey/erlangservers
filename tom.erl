@@ -5,6 +5,10 @@
 -export([start/0, say/1, stop/0]).
 -export([init/1, handle_cast/2, handle_call/3, terminate/2]).
 
+%% This is an intermediate step.  This isn't my code, but chatGPT's
+%% It is meant to show the difference between older Erlang server code
+%% and OTP gen_server code
+
 %%% ===== Public API =====
 %%% These are the functions we can use
 
