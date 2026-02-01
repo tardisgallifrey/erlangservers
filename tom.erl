@@ -10,9 +10,16 @@
 %%% ===== API =====
 
 start() ->
+    %% calls init() callback below
+    %% start_link(ServerName, Module, Args, Options)
+    %% ServerName is a tuple of 2 atoms, scope and name
+    %% ?MODULE is the current module, here tom:init().
+    %% #{} is an empty map (key=>value) of args
+    %% [] is an empty list of options
     gen_server:start_link({local, tom}, ?MODULE, #{}, []).
 
 set_name(Name) ->
+    %% Every call() calls a matching hande_call() below
     gen_server:call(tom, {set_name, Name}).
 
 get_name() ->
@@ -26,11 +33,19 @@ stop() ->
 init(State) ->
     {ok, State}.
 
+%% if the tuple pattern from the call matches here,
+%% the action of the function is taken
+%% we don't care about From because of the _
+%% we do care about State as we will create
+%% NewState by mapping name to Name and returning
+%% NewState
 handle_call({set_name, Name}, _From, State) ->
     NewState = State#{name => Name},
     {reply, ok, NewState};
 
 handle_call(get_name, _From, State) ->
+    %% State is a map; maps:get finds value of name in State.
+    %% undefined is the default.
     {reply, maps:get(name, State, undefined), State};
 
 handle_call(stop, _From, State) ->
