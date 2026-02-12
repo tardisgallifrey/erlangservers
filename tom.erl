@@ -19,7 +19,7 @@ start() ->
     gen_server:start_link({local, tom}, ?MODULE, #{}, []).
 
 set_name(Name) ->
-    %% Every call() calls a matching hande_call() below
+    %% Every call() calls a matching handle_call() below
     gen_server:call(tom, {set_name, Name}).
 
 get_name() ->
