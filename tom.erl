@@ -1,62 +1,69 @@
 -module(tom).
 -behaviour(gen_server).
 
-%% Guess: top exports (my api), bottom exports (behaviour api)
--export([start/0, set_name/1, get_name/0, stop/0]).
--export([init/1, handle_call/3, terminate/2, handle_cast/2]).
+%% Public API
+-export([start/0, save_message/1, get_all/0]).
 
-%% again, this is chatGPT code, not mine
+%% gen_server callbacks
+-export([init/1, handle_call/3, handle_cast/2, terminate/2, code_change/3]).
 
-%%% ===== API =====
+-define(TABLE, messages).
+
+%%% =========================
+%%% API
+%%% =========================
 
 start() ->
-    %% calls init() callback below
-    %% start_link(ServerName, Module, Args, Options)
-    %% ServerName is a tuple of 2 atoms, scope and name
-    %% ?MODULE is the current module, here tom:init().
-    %% #{} is an empty map (key=>value) of args
-    %% [] is an empty list of options
-    gen_server:start_link({local, tom}, ?MODULE, #{}, []).
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
-set_name(Name) ->
-    %% Every call() calls a matching handle_call() below
-    gen_server:call(tom, {set_name, Name}).
+save_message(Msg) ->
+    gen_server:call(?MODULE, {save, Msg}).
 
-get_name() ->
-    gen_server:call(tom, get_name).
+get_all() ->
+    gen_server:call(?MODULE, get_all).
 
-stop() ->
-    gen_server:call(tom, stop).
+%%% =========================
+%%% gen_server callbacks
+%%% =========================
 
-%%% ===== Callbacks =====
+init([]) ->
+    %% Open DETS table
+    {ok, _} = dets:open_file(?TABLE, [{file, "messages.dets"}]),
 
-init(State) ->
-    {ok, State}.
+    %% Determine next key
+    Keys = dets:foldl(fun({K, _V}, Acc) ->
+                              max(K, Acc)
+                      end, 0, ?TABLE),
 
-%% if the tuple pattern from the call matches here,
-%% the action of the function is taken
-%% we don't care about From because of the _
-%% we do care about State as we will create
-%% NewState by mapping name to Name and returning
-%% NewState
-handle_call({set_name, Name}, _From, State) ->
-    NewState = State#{name => Name},
+    NextId = Keys + 1,
+
+    {ok, #{next_id => NextId}}.
+
+handle_call({save, Msg}, _From, State) ->
+    Id = maps:get(next_id, State),
+
+    ok = dets:insert(?TABLE, {Id, Msg}),
+
+    NewState = State#{next_id => Id + 1},
+
     {reply, ok, NewState};
 
-handle_call(get_name, _From, State) ->
-    %% State is a map; maps:get finds value of name in State.
-    %% undefined is the default.
-    {reply, maps:get(name, State, undefined), State};
+handle_call(get_all, _From, State) ->
+    Messages = dets:foldl(fun({_K, V}, Acc) ->
+                                  [V | Acc]
+                          end, [], ?TABLE),
 
-handle_call(stop, _From, State) ->
-    {stop, normal, ok, State}.
+    {reply, lists:reverse(Messages), State};
 
-terminate(_, _) ->
-    ok.
+handle_call(_Request, _From, State) ->
+    {reply, {error, unknown_request}, State}.
 
-%% needed only to handle OTP contract
-%% and avoid warning error -- it is not used
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+terminate(_Reason, _State) ->
+    dets:close(?TABLE),
+    ok.
 
+code_change(_OldVsn, State, _Extra) ->
+    {ok, State}.
