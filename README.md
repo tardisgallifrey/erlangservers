@@ -9,12 +9,14 @@ I am learning Erlang Server programming.  As such, I have three servers called, 
 5. v5 is a basic OTP gen_server that only talks to itself.
 6. v6 is OTP gen_server with non-OTP client
 7. v7 is OTP gen_server with non-OTP client and DETS (message saving).
+8. v8 is OTP gen_server with DETS and supervisor.
 
 ### This branch:
 
-We are adding to tom.erl the necessary wiring so that messages are saved using OTP's DETS, a disk backed message logging or saving service.
+This revolution should include adding a supervisor to our servers.
 
-Because chatGPT missed that I was moving servers forward, his original idea for this revolution was a new server.  I preferred to keep the original.  He added the changes needed so that I could keep going with the original idea.  Server `dick` and `clientd` are that revolution.
+OTP supervisor is very similar to systemd service files.  It handles turning your gen_server files into server service files with automatic restart and failure detection.
+
 
 
 
