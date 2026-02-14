@@ -11,10 +11,10 @@ I am learning Erlang Server programming.  As such, I have three servers called, 
 7. v7 is OTP gen_server with non-OTP client and DETS (message saving).
 8. v8 is OTP gen_server with DETS and supervisor.
 9. v9 turns our server generic and allows us to call person_server with a server name.
+10. v10 adds Erlan OTP app folder structure and moves to dynamic supervision.
 
 ### This branch:
 
-In this revolution, we convert our server into person_server that will create individually named servers.  These become server instances that can all stand up at one time.  Each is configured with DETS to save its own person name.  The client has also be refactored to run by calling a specific server instance into being for saving and reading a name, with persistence.
 
 
 
