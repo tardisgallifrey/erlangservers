@@ -1,0 +1,5 @@
+Required to correctly run application without rebar3:
+
+Run erl inside person_system/apps/person_app:
+
+code:add_path("ebin").
