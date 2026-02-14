@@ -19,12 +19,12 @@ init([]) ->
     },
 
     PersonChild = #{
-        id => dick,
-        start => {dick, start, []},
+        id => person_server,
+        start => {person_server, start, [tom]},
         restart => permanent,
         shutdown => 5000,
         type => worker,
-        modules => [dick]
+        modules => [person_server]
     },
 
     {ok, {SupFlags, [PersonChild]}}.

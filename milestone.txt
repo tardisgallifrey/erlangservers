@@ -1,0 +1,4 @@
+git commit -m "Finalize this milestone yada"
+git tag -a versionNextnum -m "this milestone complete"
+git push origin main
+git push origin versionNextnum
