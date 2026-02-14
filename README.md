@@ -13,7 +13,9 @@ Main branch is the current version milestone where I am working. It is probably 
 7. v7 is OTP gen_server with non-OTP client and DETS (message saving).
 8. v8 is OTP gen_server with DETS and supervisor.
 9. v9 turns our server generic and allows us to call person_server with a server name.
-10. v10 adds Erlan OTP app folder structure and supervision for person_server.
+10. v10 adds Erlan OTP app folder structure for person_server.
+11. v11 adds supervisor for a person_server that creates instances (named servers).
+
 
 
 
