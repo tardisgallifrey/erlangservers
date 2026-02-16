@@ -2,9 +2,7 @@
  [
   {description, "Person supervision example"},
   {vsn, "1.0.0"},
-  {modules, [person_app,
-             person_sup,
-             person_server]},
+  {modules, [person_app, person_sup, person_server]},
   {registered, [person_sup]},
   {applications, [kernel, stdlib]},
   {mod, {person_app, []}}

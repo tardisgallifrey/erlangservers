@@ -3,9 +3,8 @@
 
 %% we call client:run(ServerName) to make it work
 run(ServerName) ->
-    %%  start tom if not already started 
-    %%  don't worry, you can't mess this up
-    person_server:start(ServerName),
+    %%  client starts the supervisor and passes server name.
+    person_sup:start_person(ServerName),
     %% set name from command line input
     Name = string:trim(io:get_line("Enter name: ")),
     %%  see if we get an ok atom from set_name(tom, Name)

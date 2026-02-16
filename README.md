@@ -16,6 +16,8 @@ Main branch is the current version milestone where I am working. It is probably 
 10. v10 adds Erlan OTP app folder structure for person_server.
 11. v11 adds supervisor for a person_server that creates instances (named servers).
 12. v12 adds OTP application code for person_app that runs person supervisor.
+13. v13 changes person_sup (supervisor) to dynamically name person_servers as needed from client.
+
 
 
 

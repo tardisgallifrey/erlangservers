@@ -1,0 +1,15 @@
+These are REPL commands that can be used to test application, supervisor, and server operations.
+
+Simple:
+whereis(serverName) -- reports PID and status of individual gen_server
+
+Supervisor:
+whereis(supervisorName) -- same as for server
+supervisor:which_children(supervisorName) -- should list status of servers running.
+
+Application:
+application:which_applications() -- should list status of applications running (will show stdlib and kernel regardless).
+
+Kill commands:
+exit(whereis(serverName), kill) -- kill server
+exit(whereis(supervisorName), kill) -- kill supervisor.
