@@ -1,9 +1,10 @@
 {application, person_prod,
  [
-  {description, "Person supervision example"},
+  {description, "Person application server"},
   {vsn, "1.0.0"},
-  {modules, [person_prod_app, person_sup, person_server]},
+  {modules, [person_prod_app, person_sup, person_server, client]},
   {registered, [person_sup]},
   {applications, [kernel, stdlib]},
-  {mod, {person_prod_app, []}}
+  {mod, {person_prod_app, []}},
+  {shell, [{apps, [person_prod]}]}
  ]}.

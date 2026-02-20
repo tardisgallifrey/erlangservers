@@ -17,8 +17,10 @@ Main branch is the current version milestone where I am working. It is probably 
 11. v11 adds supervisor for a person_server that creates instances (named servers).
 12. v12 adds OTP application code for person_app that runs person supervisor.
 13. v13 changes person_sup (supervisor) to dynamically name person_servers as needed from client.
+14. v14 is the smallest changes to get to a rebar3 Erlang app.  
 
 
+### At some point, I will work on the tag documentation.  Just not right now.
 
 
 
