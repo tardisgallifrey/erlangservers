@@ -1,10 +1,11 @@
 {application, person_prod,
  [
-  {description, "Person application server"},
-  {vsn, "1.0.0"},
-  {modules, [person_prod_app, person_sup, person_server, client]},
-  {registered, [person_sup]},
+  {description, "Person System"},
+  {vsn, "0.1.0"},
+  {modules, [person_prod_app, root_sup, person_sup, person_server]},
+  {registered, []},
   {applications, [kernel, stdlib]},
   {mod, {person_prod_app, []}},
-  {shell, [{apps, [person_prod]}]}
+  {mod, {shell, [{apps, [person_prod]}]}}
+
  ]}.

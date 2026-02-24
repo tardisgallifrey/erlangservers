@@ -25,11 +25,18 @@ get_name(Server) ->
 stop() ->
     gen_server:call(?MODULE, stop).
 
+get_dets_file_path(FileName) ->
+    PrivDir = code:priv_dir(person_prod_app),  % Replace with your app name
+    DetFile = filename:join([PrivDir, FileName]),
+    DetFile.
+
 %%% ===== Callbacks =====
 
 init(Name) ->
     %% set filename for dets based on Name 
     FileName = atom_to_list(Name) ++ ".dets",
+    PrivDir = code:priv_dir(person_prod),
+    io:format("~s~n", [PrivDir]),
     TableName = Name,
 
     {ok, _} = dets:open_file(TableName, [{file, FileName}]),
