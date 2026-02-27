@@ -8,3 +8,6 @@ Compile to a path:
 
 compile:file("src/person_server.erl", [{outdir, "ebin"}].
 
+Also read, apptests.txt, gen_server_required.txt
+
+
